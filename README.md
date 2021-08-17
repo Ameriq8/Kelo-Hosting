@@ -8,9 +8,9 @@ Simple Hosting to sell services
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`API_KEY`
+`MONGODB_URI`
 
-`ANOTHER_API_KEY`
+`JWT_SECRET`
 
 ## Run Locally
 
@@ -76,4 +76,4 @@ Start the client
 
 ## License
 
-[MIT](https://www.github.com/Ameriq8/Kelo-Hosting/LICENSE)
+[MIT](https://github.com/Ameriq8/Kelo-Hosting/blob/main/LICENSE)
