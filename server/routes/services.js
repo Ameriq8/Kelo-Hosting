@@ -1,25 +1,25 @@
 const router = require("express").Router();
-const CheckAuth = require("../middleware/CheckAuth");
-const services = require("../database/schema/services.schema");
+const CheckAuthRole = require("../middleware/CheckAuthRole");
+const Services = require("../database/schema/services.schema");
 
 router.get("/fetch-items", async (req, res) => {
-  const items = await services.find({});
+  const items = await Services.find({});
   res.json(items);
 });
 
 router.get("/fetch-items/:id", async (req, res) => {
-  const item = await services.findOne({ _id: req.params.id });
+  const item = await Services.findOne({ _id: req.params.id });
   res.json(item);
 });
 
-router.post("/new-item", async (req, res) => {
+router.post("/new-item", CheckAuthRole, async (req, res) => {
   try {
     const { item, status, categoryItem, price } = req.body;
     console.log({item, status, categoryItem, price})
     if (!item || !status || !categoryItem || !price)
       return res.status(400).json({ msg: "Not all fields have been entered" });
 
-    const newItem = new services({
+    const newItem = new Services({
       item,
       status,
       categoryItem,
@@ -32,11 +32,11 @@ router.post("/new-item", async (req, res) => {
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/update/:id", CheckAuthRole, async (req, res) => {
   const { item, status, categoryItem, price } = req.body;
-  const isItem = await services.findOne({ _id: req.params.id });
+  const isItem = await Services.findOne({ _id: req.params.id });
   if (!isItem) return res.status(400).json({ msg: "No item found !!" });
-  const updateItem = await services.findByIdAndUpdate(
+  const updateItem = await Services.findByIdAndUpdate(
     { _id: isItem._id },
     { item, status, categoryItem, price },
     { new: true }
@@ -44,10 +44,10 @@ router.put("/update/:id", async (req, res) => {
   res.json(updateItem);
 });
 
-router.delete("/delete/:id", async (req, res) => {
-  const item = await services.findOne({ _id: req.params.id });
+router.delete("/delete/:id", CheckAuthRole, async (req, res) => {
+  const item = await Services.findOne({ _id: req.params.id });
   if (!item) return res.status(400).json({ msg: "No item found !!" });
-  const deletedItem = await services.findByIdAndDelete(item._id);
+  const deletedItem = await Services.findByIdAndDelete(item._id);
   res.json(deletedItem);
 });
 

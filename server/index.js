@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
+require("./utils/autoRunMethods");
 require("dotenv").config();
 require("./database");
 
@@ -35,7 +36,11 @@ app.use(morgan("tiny"));
 
 app.use("/api/auth", require("./routes/users"));
 app.use("/api/services", require("./routes/services"));
+app.use("/api/orders", require("./routes/orders"));
+app.use("/api/dashboard", require("./routes/dashboard"));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`The server has started on port: ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`The server has started on port: ${PORT}`);
+});
